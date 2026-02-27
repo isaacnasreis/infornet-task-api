@@ -3,47 +3,80 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
-use Illuminate\Http\Request;
+use Illuminate\Http\Requests\StoreTaskRequest;
+use Illuminate\Http\Requests\UpdateTaskRequest;
+use Illuminate\Http\JsonResponse;
 
 class TaskController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * GET /api/tasks
+     * Lista todas as tarefas
      */
     public function index()
     {
-        //
+        $tasks = Task::orderBy('created_at', 'desc')->paginate(10);
+        return response()->json($tasks);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * POST /api/tasks
+     * Cria uma nova tarefa
      */
-    public function store(Request $request)
-    {
-        //
+    public function store(StoreTaskRequest $request): JsonResponse
+     {
+        try {
+            $task = Task::create($request->validated());
+            return response()->json($task, 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Ocorreu um erro ao tentar criar a tarefa.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+        
     }
 
     /**
-     * Display the specified resource.
+     * GET /api/tasks/{task}
+     * Exibe os detalhes de uma tarefa específica
      */
-    public function show(Task $task)
+    public function show(Task $task): JsonResponse
     {
-        //
+        return response()->json($task);
     }
 
     /**
-     * Update the specified resource in storage.
+     * PUT /api/tasks/{task}
+     * Atualiza uma tarefa específica se ela existir
      */
-    public function update(Request $request, Task $task)
+    public function update(UpdateTaskRequest $request, Task $task): JsonResponse
     {
-        //
+        try {
+            $task->update($request->validated());
+            return response()->json($task);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Ocorreu um erro ao tentar atualizar a tarefa.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
-     * Remove the specified resource from storage.
+     * DELETE /api/tasks/{task}
+     * Remove a tarefa específica se ela existir
      */
     public function destroy(Task $task)
     {
-        //
+        try {
+            $task->delete();
+            return response()->json(null, 204);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Ocorreu um erro ao tentar deletar a tarefa.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }
