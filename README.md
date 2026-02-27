@@ -16,5 +16,5 @@ Este projeto foi construído utilizando o **Laravel Sail**. Para rodar a aplica�
 
 1. **Clone o repositório:**
    ```bash
-   git clone [https://github.com/SEU_USUARIO/infornet-task-api.git](https://github.com/SEU_USUARIO/infornet-task-api.git)
+   git clone [https://github.com/isaacnasreis/infornet-task-api.git](https://github.com/isaacnasreis/infornet-task-api.git)
    cd infornet-task-api

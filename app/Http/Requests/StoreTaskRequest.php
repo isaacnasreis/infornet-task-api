@@ -27,4 +27,17 @@ class StoreTaskRequest extends FormRequest
             'completed' => 'boolean',
         ];
     }
+
+    **
+     * Get the error messages for the defined validation rules.
+     */
+    public function messages(): array
+    {
+        return [
+            'title.required' => 'O título da tarefa é obrigatório.',
+            'title.max' => 'O título não pode ter mais de 255 caracteres.',
+            'description.required' => 'A descrição da tarefa é obrigatória.',
+            'completed.boolean' => 'O status de conclusão deve ser verdadeiro ou falso.',
+        ];
+    }
 }
